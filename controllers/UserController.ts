@@ -1,6 +1,6 @@
 import UserControllerI from "../interfaces/UserControllerI";
 import UserDao from "../daos/UserDao";
-import {Express, Request, Response} from "express";
+import {Express, NextFunction, Request, Response} from "express";
 
 export default class UserController implements UserControllerI {
 
@@ -26,24 +26,28 @@ export default class UserController implements UserControllerI {
             .then(users => res.json(users));
     }
 
-    findUserById = (req: Request, res: Response) => {
+    findUserById = (req: Request, res: Response, next: NextFunction) => {
         UserController.userDao.findUserById(req.params.userid)
-            .then(user => res.json(user));
+            .then(user => res.json(user))
+            .catch(next);
     }
 
-    createUser = (req: Request, res: Response) => {
+    createUser = (req: Request, res: Response, next: NextFunction) => {
         UserController.userDao.createUser(req.body)
-            .then(user => res.json(user));
+            .then(user => res.json(user))
+            .catch(next);
     }
 
-    deleteUser = (req: Request, res: Response) => {
+    deleteUser = (req: Request, res: Response, next: NextFunction) => {
         UserController.userDao.deleteUser(req.params.userid)
-            .then(status => res.json(status));
+            .then(status => res.json(status))
+            .catch(next);
     }
 
-    updateUser = (req: Request, res: Response) => {
+    updateUser = (req: Request, res: Response, next: NextFunction) => {
         UserController.userDao.updateUser(req.params.userid, req.body)
-            .then(status => res.json(status));
+            .then(status => res.json(status))
+            .catch(next);
     }
 
 }

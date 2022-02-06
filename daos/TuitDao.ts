@@ -8,7 +8,7 @@ export default class TuitDao implements TuitDaoI {
 
     public static getInstance = () => {
         if (TuitDao.tuitDao === null) {
-            return new TuitDao();
+            TuitDao.tuitDao =  new TuitDao();
         }
         return TuitDao.tuitDao;
     }
@@ -32,7 +32,7 @@ export default class TuitDao implements TuitDaoI {
     }
 
     updateTuit = async(tid: string, tuit: Tuit): Promise<any> => {
-        return TuitModel.updateOne({_id: tid}, tuit);
+        return TuitModel.updateOne({_id: tid}, {$set: tuit});
     }
 
     deleteTuit = async(tid: string): Promise<any> => {

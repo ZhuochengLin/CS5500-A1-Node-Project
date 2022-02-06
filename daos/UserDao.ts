@@ -8,7 +8,7 @@ export default class UserDao implements UserDaoI {
 
     public static getInstance = () => {
         if (UserDao.userDao === null) {
-            return new UserDao();
+            UserDao.userDao = new UserDao();
         }
         return UserDao.userDao;
     }
@@ -16,8 +16,7 @@ export default class UserDao implements UserDaoI {
     private constructor() {}
 
     findAllUsers = async() : Promise<User[]> => {
-        const users: User[] = await UserModel.find({});
-        return users ? users: [];
+        return UserModel.find({});
     }
 
     findUserById = async(uid: string): Promise<User | null> =>{
@@ -29,7 +28,7 @@ export default class UserDao implements UserDaoI {
     }
 
     updateUser = async(uid: string, user: User): Promise<any> => {
-        return UserModel.updateOne({_id: uid}, user);
+        return UserModel.updateOne({_id: uid}, {$set: user});
     }
 
     deleteUser = async(uid: string): Promise<any> => {

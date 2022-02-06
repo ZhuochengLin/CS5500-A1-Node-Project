@@ -4,7 +4,7 @@ import {AccountType} from "../models/enums/AccountType";
 import ProfileSchema from "./ProfileSchema";
 
 const UserSchema = new mongoose.Schema<User>({
-    username: {type: String, required: true},
+    username: {type: String, index: true, unique: true, required: true},
     password: {type: String, required: true},
     accountType: {
         type: String,

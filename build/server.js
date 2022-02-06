@@ -8,19 +8,19 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const TuitController_1 = __importDefault(require("./controllers/TuitController"));
 const UserController_1 = __importDefault(require("./controllers/UserController"));
 const dotenv_1 = require("dotenv");
+const logErrors_1 = __importDefault(require("./error_handlers/logErrors"));
+const dbErrorHandler_1 = __importDefault(require("./error_handlers/dbErrorHandler"));
+const errorHandler_1 = __importDefault(require("./error_handlers/errorHandler"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.get("/health", (req, res) => res.json("Good"));
-if (process.env.NODE_ENV === "local") {
-    mongoose_1.default.connect("mongodb://localhost:27017/tuiter");
-}
-else {
-    const user = process.env.DB_USER;
-    const password = process.env.DB_PASSWORD;
-    mongoose_1.default.connect(`mongodb+srv://${user}:${password}@cluster0.qlxai.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`);
-}
+app.get('/hello', (req, res) => res.send('Hello World!'));
+app.get('/add/:a/:b', (req, res) => res.send(req.params.a + req.params.b));
+mongoose_1.default.connect(`${process.env.DB_PREFIX}://${process.env.DB_USER}:${process.env.DB_PASSWORD}${process.env.DB_SUFFIX}`);
 const userController = UserController_1.default.getInstance(app);
 const tuitController = TuitController_1.default.getInstance(app);
 const PORT = 4000;
+app.use(logErrors_1.default);
+app.use(dbErrorHandler_1.default);
+app.use(errorHandler_1.default);
 app.listen(process.env.PORT || PORT);
