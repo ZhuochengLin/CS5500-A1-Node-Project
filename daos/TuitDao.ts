@@ -8,7 +8,7 @@ export default class TuitDao implements TuitDaoI {
 
     public static getInstance = () => {
         if (TuitDao.tuitDao === null) {
-            TuitDao.tuitDao =  new TuitDao();
+            TuitDao.tuitDao = new TuitDao();
         }
         return TuitDao.tuitDao;
     }
