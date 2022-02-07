@@ -12,7 +12,10 @@ const app = express();
 app.use(express.json());
 app.get('/hello', (req: Request, res: Response) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req: Request, res: Response) => res.send(req.params.a + req.params.b));
-mongoose.connect(`${process.env.DB_PREFIX}://${process.env.DB_USER}:${process.env.DB_PASSWORD}${process.env.DB_SUFFIX}`);
+mongoose.connect(`${process.env.DB_URI}`, (err) => {
+    if (err) throw err;
+    console.log("Mongoose connected!");
+});
 
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);

@@ -16,7 +16,11 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.get('/hello', (req, res) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req, res) => res.send(req.params.a + req.params.b));
-mongoose_1.default.connect(`${process.env.DB_PREFIX}://${process.env.DB_USER}:${process.env.DB_PASSWORD}${process.env.DB_SUFFIX}`);
+mongoose_1.default.connect(`${process.env.DB_URI}`, (err) => {
+    if (err)
+        throw err;
+    console.log("Mongoose connected!");
+});
 const userController = UserController_1.default.getInstance(app);
 const tuitController = TuitController_1.default.getInstance(app);
 const PORT = 4000;
