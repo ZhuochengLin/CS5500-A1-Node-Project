@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import TuitSchema from "./TuitSchema";
 
-const tuitModel = mongoose.model("TuitModel", TuitSchema);
+const TuitModel = mongoose.model("TuitModel", TuitSchema);
 
-export default tuitModel;
+export default TuitModel;

@@ -2,7 +2,6 @@ import {MaritalStatus} from "./enums/MaritalStatus";
 import Location from "./Location";
 
 export default interface Profile {
-
     firstName: string;
     lastName: string;
     email: string;
@@ -12,5 +11,4 @@ export default interface Profile {
     biography: string | null;
     dateOfBirth: Date | null;
     location: Location | null;
-
 }

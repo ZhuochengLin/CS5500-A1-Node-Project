@@ -22,35 +22,35 @@ export default class TuitController implements TuitControllerI {
 
     private constructor() {}
 
-    findAllTuits(req: Request, res: Response): void {
+    findAllTuits = (req: Request, res: Response): void => {
         TuitController.tuitDao.findAllTuits()
             .then(tuis => res.json(tuis));
     }
 
-    findTuitById(req: Request, res: Response, next: NextFunction): void {
+    findTuitById = (req: Request, res: Response, next: NextFunction): void => {
         TuitController.tuitDao.findTuitById(req.params.tuitid)
             .then(tuit => res.json(tuit))
             .catch(next);
     }
 
-    findTuitsByUser(req: Request, res: Response, next: NextFunction): void {
+    findTuitsByUser = (req: Request, res: Response, next: NextFunction): void => {
         TuitController.tuitDao.findTuitsByUser(req.params.userid)
             .then(tuits => res.json(tuits))
             .catch(next);
     }
 
-    createTuit(req: Request, res: Response): void {
+    createTuit = (req: Request, res: Response): void => {
         TuitController.tuitDao.createTuit(req.body)
             .then(tuit => res.json(tuit));
     }
 
-    deleteTuit(req: Request, res: Response, next: NextFunction): void {
+    deleteTuit = (req: Request, res: Response, next: NextFunction): void => {
         TuitController.tuitDao.deleteTuit(req.params.tuitid)
             .then(status => res.json(status))
             .catch(next);
     }
 
-    updateTuit(req: Request, res: Response, next: NextFunction): void {
+    updateTuit = (req: Request, res: Response, next: NextFunction): void => {
         TuitController.tuitDao.updateTuit(req.params.tuitid, req.body)
             .then(status => res.json(status))
             .catch(next);

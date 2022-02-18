@@ -4,11 +4,9 @@ import Message from "./Message";
 import Tuit from "./Tuit";
 
 export default interface User {
-
     username: string;
     password: string;
     accountType: AccountType;
     joined: Date;
     profile: Profile;
-
 }
