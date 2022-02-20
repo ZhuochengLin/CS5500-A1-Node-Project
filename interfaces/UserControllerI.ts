@@ -1,6 +1,9 @@
+/**
+ * @file Declares the UserController interface.
+ */
 import {NextFunction, Request, Response} from "express";
 
-export default interface UserControllerI {
+export interface UserControllerI {
     findAllUsers(req: Request, res: Response): void;
     findUserById(req: Request, res: Response, next: NextFunction): void;
     createUser(req: Request, res: Response, next: NextFunction): void;

@@ -1,6 +1,9 @@
-import User from "./User";
+/**
+ * @file Defines Follow interface that reflects "user follows another user" relationship.
+ */
+import {User} from "./User";
 
-export default interface Follow {
+export interface Follow {
     user: User;
     followedBy: User;
 }

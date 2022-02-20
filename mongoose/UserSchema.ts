@@ -1,5 +1,8 @@
-import mongoose, {Schema} from "mongoose";
-import User from "../models/User";
+/**
+ * @file Creates a MongoDB schema for {@link User} in the "users" collection.
+ */
+import mongoose from "mongoose";
+import {User} from "../models/User";
 import {AccountType} from "../models/enums/AccountType";
 import ProfileSchema from "./ProfileSchema";
 

@@ -1,5 +1,8 @@
+/**
+ * @file Creates a MongoDB schema for {@link Profile}, which is a subdocument of {@link UserSchema}.
+ */
 import mongoose from "mongoose";
-import Profile from "../models/Profile";
+import {Profile} from "../models/Profile";
 import {MaritalStatus} from "../models/enums/MaritalStatus";
 
 const ProfileSchema = new mongoose.Schema<Profile>({

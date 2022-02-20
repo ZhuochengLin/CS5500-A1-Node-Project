@@ -1,6 +1,9 @@
-import User from "../models/User";
+/**
+ * @file Declares the UserDao interface.
+ */
+import {User} from "../models/User";
 
-export default interface UserDaoI {
+export interface UserDaoI {
     findAllUsers(): Promise<User[]>;
     findUserById(uid: string): Promise<User | null>;
     createUser(user: User): Promise<User>;

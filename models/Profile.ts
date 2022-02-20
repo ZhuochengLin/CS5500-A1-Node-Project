@@ -1,7 +1,10 @@
+/**
+ * @file Defines Profile interface that reflects the {@link User}'s profile info.
+ */
 import {MaritalStatus} from "./enums/MaritalStatus";
-import Location from "./Location";
+import {Location} from "./Location";
 
-export default interface Profile {
+export interface Profile {
     firstName: string;
     lastName: string;
     email: string;

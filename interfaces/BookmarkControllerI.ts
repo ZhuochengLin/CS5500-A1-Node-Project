@@ -1,6 +1,9 @@
+/**
+ * @file Declares the BookmarkController interface.
+ */
 import {NextFunction, Request, Response} from "express";
 
-export default interface BookmarkControllerI {
+export interface BookmarkControllerI {
     userBookmarksTuit(req: Request, res: Response, next: NextFunction): void;
     userUnbookmarksTuit(req: Request, res: Response, next: NextFunction): void;
     findBookmarkedTuitsByUser(req: Request, res: Response, next: NextFunction): void;

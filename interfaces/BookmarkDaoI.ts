@@ -1,6 +1,9 @@
-import Bookmark from "../models/Bookmark";
+/**
+ * @file Declares the BookmarkDao interface.
+ */
+import {Bookmark} from "../models/Bookmark";
 
-export default interface BookmarkDaoI {
+export interface BookmarkDaoI {
     userBookmarksTuit(uid: string, tid: string): Promise<Bookmark>;
     userUnbookmarksTuit(uid: string, tid: string): Promise<any>;
     findBookmarkedTuitsByUser(uid: string): Promise<Bookmark[]>;

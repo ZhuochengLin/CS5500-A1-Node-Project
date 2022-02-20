@@ -1,5 +1,8 @@
+/**
+ * @file Creates a MongoDB schema for {@link Message} in the "messages" collection.
+ */
 import mongoose, {now} from "mongoose";
-import Message from "../models/Message";
+import {Message} from "../models/Message";
 
 const MessageSchema = new mongoose.Schema<Message>({
    sender: {type: mongoose.Schema.Types.ObjectId, ref: "UserModel", required: true},

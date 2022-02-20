@@ -1,6 +1,9 @@
-import Tuit from "./Tuit";
+/**
+ * @file Defines Tag interface that reflects "tuit has a tag" relationship.
+ */
+import {Tuit} from "./Tuit";
 
-export default interface Tag {
+export interface Tag {
     tag: string;
     tuit: Tuit;
 }

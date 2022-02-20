@@ -1,5 +1,8 @@
+/**
+ * @file Creates a MongoDB schema for {@link Follow} in the "follows" collection.
+ */
 import mongoose from "mongoose";
-import Follow from "../models/Follow";
+import {Follow} from "../models/Follow";
 
 const FollowSchema = new mongoose.Schema<Follow>({
     user: {type: mongoose.Schema.Types.ObjectId, ref: "UserModel", required: true},

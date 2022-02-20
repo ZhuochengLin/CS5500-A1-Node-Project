@@ -1,6 +1,9 @@
-import Like from "../models/Like";
+/**
+ * @file Declares the likeDao interface.
+ */
+import {Like} from "../models/Like";
 
-export default interface LikeDaoI {
+export interface LikeDaoI {
     userLikesTuit(uid: string, tid: string): Promise<Like>;
     userUnlikesTuit(uid: string, tid: string): Promise<any>;
     findAllUsersThatLikedTuit(tid: string): Promise<Like[]>;

@@ -1,6 +1,9 @@
-import Follow from "../models/Follow";
+/**
+ * @file Declares the FollowDao interface.
+ */
+import {Follow} from "../models/Follow";
 
-export default interface FollowDaoI {
+export interface FollowDaoI {
     userAFollowsUserB(uida: string, uidb: string): Promise<Follow>;
     userAUnfollowsUserB(uida: string, uidb: string): Promise<any>;
     findFollowersByUser(uid: string): Promise<Follow[]>;
