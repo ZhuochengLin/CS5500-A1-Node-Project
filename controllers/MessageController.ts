@@ -32,7 +32,8 @@ export class MessageController implements MessageControllerI {
             app.post("/api/users/:uida/messages/:uidb", MessageController.messageController.userASendsMessageToUserB);
             app.get("/api/users/:uid/messages", MessageController.messageController.findSentMessagesByUser);
             app.get("/api/messages/:uid", MessageController.messageController.findReceivedMessagesByUser);
-            app.delete("/api/users/:uid/messages/:mid", MessageController.messageController.deleteMessage);
+            app.delete("/api/messages/:mid", MessageController.messageController.deleteMessage);
+            app.get("/api/messages", MessageController.messageController.findAllMessages);
         }
         return MessageController.messageController;
     }
@@ -89,10 +90,22 @@ export class MessageController implements MessageControllerI {
      * @param {NextFunction} next Error handling function
      */
     deleteMessage = (req: Request, res: Response, next: NextFunction): void => {
-        MessageController.messageDao.deleteMessage(req.params.uid, req.params.mid)
+        MessageController.messageDao.deleteMessage(req.params.mid)
             .then((status) => res.json(status))
             .catch(next);
     }
 
+    /**
+     * Retrieves all messages from the database.
+     * @param {Request} req Represents request from the client
+     * @param {Response} res Represents response to the client, including the body formatted as JSON array
+     * containing the message objects
+     */
+    findAllMessages = (req: Request, res: Response): void => {
+        MessageController.messageDao.findAllMessages()
+            .then((messages) => res.json(messages));
+    }
 }
+
+
 

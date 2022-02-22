@@ -66,21 +66,21 @@ export class MessageDao implements MessageDaoI {
     }
 
     /**
-     * Deletes a user's message from the database. The message must be sent to/from the user.
-     * @param {string} uid The user's primary key
+     * Deletes a user's message from the database.
      * @param {string} mid The message's primary key
      * @throws {Error} If the message is not sent to/from the user
      * @returns {Promise} To be notified when the message is deleted
      */
-    deleteMessage = async(uid: string, mid: string): Promise<any> => {
-        return MessageModel.findOne({$or: [{_id: mid, sender: uid}, {_id: mid, receiver: uid}]})
-            .then((msg) => {
-                if (msg) {
-                    return MessageModel.deleteOne({_id: mid});
-                } else {
-                    throw new ReferenceError(`Message ${mid} is not sent to/from user ${uid}.`);
-                }
-            });
+    deleteMessage = async(mid: string): Promise<any> => {
+        return MessageModel.deleteOne({_id: mid});
+    }
+
+    /**
+     * Retrieves all messages from the database.
+     * @returns {Promise} To be notified when the messages are retrieved
+     */
+    findAllMessages = async(): Promise<Message[]> => {
+        return MessageModel.find();
     }
 
 }
