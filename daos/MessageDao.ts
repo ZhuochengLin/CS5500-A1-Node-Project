@@ -6,6 +6,8 @@ import {MessageDaoI} from "../interfaces/MessageDaoI";
 import {Message} from "../models/Message";
 import MessageModel from "../mongoose/MessageModel";
 import {Error} from "mongoose";
+import {UserDao} from "./UserDao";
+import e from "express";
 
 /**
  * Implements Data Access Object managing the data storage of messages.
@@ -36,12 +38,23 @@ export class MessageDao implements MessageDaoI {
      * Inserts a new data record in the database that reflects "userA sends a message to userB" relationship.
      * @param {string} uida UserA's primary key (sender)
      * @param {string} uidb UserB's primary key (receiver)
-     * @param {string} msg Message content
+     * @param {Message} msg Message content
      * @returns {Promise} To be notified when the message is inserted
      */
-    userASendsMessageToUserB = async(uida: string, uidb: string, msg: string): Promise<Message> => {
-        if (msg) {
-            return MessageModel.create({sender: uida, receiver: uidb, message: msg});
+    userASendsMessageToUserB = async(uida: string, uidb: string, msg: Message): Promise<Message> => {
+        const msg_content = msg["message"];
+        if (msg_content) {
+            const userA = await UserDao.getInstance().findUserById(uida);
+            const userB = await UserDao.getInstance().findUserById(uidb);
+            if (userA) {
+                if (userB) {
+                    return MessageModel.create({...msg, sender: uida, receiver: uidb});
+                } else {
+                    throw new ReferenceError(`Receiver ${uidb} does not exist.`);
+                }
+            } else {
+                throw new ReferenceError(`Sender ${uida} does not exist.`);
+            }
         } else {
             throw new RangeError("Empty message. Please check the request body.");
         }

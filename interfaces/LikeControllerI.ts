@@ -8,4 +8,5 @@ export interface LikeControllerI {
     userUnlikesTuit(req: Request, res: Response, next: NextFunction): void;
     findAllUsersThatLikedTuit(req: Request, res: Response, next: NextFunction): void;
     findAllTuitsLikedByUser(req: Request, res: Response, next: NextFunction): void;
+    findAllLikes(req: Request, res: Response): void;
 }

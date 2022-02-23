@@ -48,7 +48,7 @@ export class MessageController implements MessageControllerI {
      * @param {NextFunction} next Error handling function
      */
     userASendsMessageToUserB = (req: Request, res: Response, next: NextFunction): void => {
-        MessageController.messageDao.userASendsMessageToUserB(req.params.uida, req.params.uidb, req.body["message"])
+        MessageController.messageDao.userASendsMessageToUserB(req.params.uida, req.params.uidb, req.body)
             .then((message) => res.json(message))
             .catch(next);
     }

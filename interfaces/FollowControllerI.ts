@@ -8,4 +8,5 @@ export interface FollowControllerI {
     userAUnfollowsUserB(req: Request, res: Response, next: NextFunction): void;
     findFollowersByUser(req: Request, res: Response, next: NextFunction): void;
     findFollowingsByUser(req: Request, res: Response, next: NextFunction): void;
+    findAllFollows(req: Request, res: Response): void;
 }

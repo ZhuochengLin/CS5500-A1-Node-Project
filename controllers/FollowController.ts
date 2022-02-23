@@ -33,6 +33,7 @@ export class FollowController implements FollowControllerI{
             app.delete("/api/users/:uida/follows/:uidb", FollowController.followController.userAUnfollowsUserB);
             app.get("/api/users/:uid/follows", FollowController.followController.findFollowingsByUser);
             app.get("/api/follows/:uid", FollowController.followController.findFollowersByUser);
+            app.get("/api/follows", FollowController.followController.findAllFollows);
         }
         return FollowController.followController;
     }
@@ -91,6 +92,16 @@ export class FollowController implements FollowControllerI{
         FollowController.followDao.findFollowingsByUser(req.params.uid)
             .then((follows) => res.json(follows))
             .catch(next);
+    }
+
+    /**
+     * Retrieves all follows records from the database.
+     * @param {Request} req Represents request from the client
+     * @param {Response} res Represents response to the client
+     */
+    findAllFollows = (req: Request, res: Response): void => {
+        FollowController.followDao.findAllFollows()
+            .then((likes) => res.json(likes));
     }
 
 }

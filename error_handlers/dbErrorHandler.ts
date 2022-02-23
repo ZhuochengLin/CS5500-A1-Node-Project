@@ -2,6 +2,7 @@
  * @file Defines an error handler that handles only database related errors.
  */
 import {NextFunction, Request, Response} from "express";
+import {Error} from "mongoose";
 
 /**
  * Declares a custom error interface.
@@ -23,7 +24,7 @@ interface DBError extends Error {
  */
 export function dbErrorHandler(err: DBError, req: Request, res: Response, next: NextFunction) {
     if (err.name === "ValidationError" || err.name === "CastError") {
-        res.status(500).send(`Invalid ${err.path}: ${err.value}`);
+        res.status(500).send(err.message);
     } else if (err.code === 11000) {
         res.status(500).send(`Duplicate ${Object.keys(err.keyValue)[0]}: ${Object.values(err.keyValue)[0]}`);
     } else {

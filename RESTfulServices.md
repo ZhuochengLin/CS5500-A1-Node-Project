@@ -185,7 +185,7 @@ data, MongoDB's index technique can help speed up the process.
   * Easy to retrieve, add, and delete bookmarked tuit
   * Doable in MongoDB
 * Cons:
-  * Hard to retrieve all the users that bookmarked a certain tuit
+  * Hard to retrieve all the users that bookmarked a certain tuit, which needs a full scan on the database.
   * Impossible in relational database
 
 ### 2. Add "bookmarkedTuit" field to the User class and "bookmarkedBy" field to the Tuit class

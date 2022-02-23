@@ -1,7 +1,7 @@
 /**
  * @file Creates a MongoDB schema for {@link Message} in the "messages" collection.
  */
-import mongoose, {now} from "mongoose";
+import mongoose from "mongoose";
 import {Message} from "../models/Message";
 
 const MessageSchema = new mongoose.Schema<Message>({

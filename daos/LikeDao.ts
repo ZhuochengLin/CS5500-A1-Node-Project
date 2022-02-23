@@ -5,6 +5,8 @@
 import {LikeDaoI} from "../interfaces/LikeDaoI";
 import {Like} from "../models/Like";
 import LikeModel from "../mongoose/LikeModel";
+import {UserDao} from "./UserDao";
+import {TuitDao} from "./TuitDao";
 
 /**
  * * Implements Data Access Object managing data storage of likes.
@@ -38,9 +40,19 @@ export class LikeDao implements LikeDaoI {
      * @return {Promise} To be notified when the like is inserted into the database
      */
     userLikesTuit = async(uid: string, tid: string): Promise<Like> => {
-        return LikeModel.findOne({tuit: tid, likedBy: uid}).then((like) => {
-            return like === null ? LikeModel.create({tuit: tid, likedBy: uid}) : like;
-        })
+        const user = await UserDao.getInstance().findUserById(uid);
+        const tuit = await TuitDao.getInstance().findTuitById(tid);
+        if (user) {
+            if (tuit) {
+                return LikeModel.findOne({tuit: tid, likedBy: uid}).then((like) => {
+                    return like === null ? LikeModel.create({tuit: tid, likedBy: uid}) : like;
+                })
+            } else {
+                throw new ReferenceError(`Tuit ${tid} does not exist.`)
+            }
+        } else {
+            throw new ReferenceError(`User ${uid} does not exist.`);
+        }
     }
 
     /**
@@ -69,6 +81,14 @@ export class LikeDao implements LikeDaoI {
      */
     findAllTuitsLikedByUser = async(uid: string): Promise<Like[]> => {
         return LikeModel.find({likedBy: uid}).populate("tuit").exec();
+    }
+
+    /**
+     * Reads all the like records from the database.
+     * @returns {Promise} To be notified when the list of likes are retrieved from the database
+     */
+    findAllLikes = async(): Promise<Like[]> => {
+        return LikeModel.find();
     }
 
 }

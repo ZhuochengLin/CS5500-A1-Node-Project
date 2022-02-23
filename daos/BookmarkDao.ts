@@ -5,6 +5,8 @@
 import {BookmarkDaoI} from "../interfaces/BookmarkDaoI";
 import {Bookmark} from "../models/Bookmark";
 import BookmarkModel from "../mongoose/BookmarkModel";
+import {UserDao} from "./UserDao";
+import {TuitDao} from "./TuitDao";
 
 /**
  * Implements Data Access Object managing data storage of bookmarks.
@@ -38,10 +40,20 @@ export class BookmarkDao implements BookmarkDaoI {
      * @returns {Promise} To be notified when the bookmark is inserted into the database
      */
     userBookmarksTuit = async(uid: string, tid: string): Promise<Bookmark> => {
-        return BookmarkModel.findOne({tuit: tid, bookmarkedBy: uid})
-            .then((bookmark) => {
-                return bookmark === null ? BookmarkModel.create({tuit: tid, bookmarkedBy: uid}) : bookmark;
-            });
+        const user = await UserDao.getInstance().findUserById(uid);
+        const tuit = await TuitDao.getInstance().findTuitById(tid);
+        if (user) {
+            if (tuit) {
+                return BookmarkModel.findOne({tuit: tid, bookmarkedBy: uid})
+                    .then((bookmark) => {
+                        return bookmark === null ? BookmarkModel.create({tuit: tid, bookmarkedBy: uid}) : bookmark;
+                    });
+            } else {
+                throw new ReferenceError(`Tuit ${tid} does not exist.`)
+            }
+        } else {
+            throw new ReferenceError(`User ${uid} does not exist.`);
+        }
     }
 
     /**

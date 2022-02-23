@@ -33,6 +33,7 @@ export class LikeController implements LikeControllerI {
             app.delete("/api/users/:uid/likes/:tid", LikeController.likeController.userUnlikesTuit);
             app.get("/api/tuits/likes/:tid", LikeController.likeController.findAllUsersThatLikedTuit);
             app.get("/api/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
+            app.get("/api/likes", LikeController.likeController.findAllLikes);
         }
         return LikeController.likeController;
     }
@@ -91,6 +92,16 @@ export class LikeController implements LikeControllerI {
         LikeController.likeDao.findAllTuitsLikedByUser(req.params.uid)
             .then((tuits) => res.json(tuits))
             .catch(next);
+    }
+
+    /**
+     * Retrieves all likes from the database.
+     * @param {Request} req Represents request from the client
+     * @param {Response} res Represents response to the client
+     */
+    findAllLikes = (req: Request, res: Response): void => {
+        LikeController.likeDao.findAllLikes()
+            .then((likes) => res.json(likes));
     }
 
 }

@@ -45,7 +45,7 @@ export class UserDao implements UserDaoI {
      * @returns {Promise} To be notified when user is retrieved from the database
      */
     findUserById = async(uid: string): Promise<User | null> =>{
-        return UserModel.findById(uid);
+        return UserModel.findOne({_id: uid});
     }
 
     /**

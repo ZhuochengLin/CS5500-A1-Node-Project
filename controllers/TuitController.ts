@@ -26,7 +26,7 @@ export class TuitController implements TuitControllerI {
             app.get("/api/tuits", TuitController.tuitController.findAllTuits);
             app.get("/api/tuits/:tuitid", TuitController.tuitController.findTuitById);
             app.get("/api/users/:userid/tuits", TuitController.tuitController.findTuitsByUser);
-            app.post("/api/tuits/", TuitController.tuitController.createTuit);
+            app.post("/api/users/:userid/tuits/", TuitController.tuitController.createTuitByUser);
             app.delete("/api/tuits/:tuitid", TuitController.tuitController.deleteTuit);
             app.put("/api/tuits/:tuitid", TuitController.tuitController.updateTuit);
         }
@@ -80,14 +80,15 @@ export class TuitController implements TuitControllerI {
 
     /**
      * Creates a new tuit instance.
-     * @param {Request} req, Represents request from the client, including body containing the
+     * @param {Request} req, Represents request from the client, including path parameter userid
+     * identifying the user's primary key and the body containing the
      * JSON object for the new tuit to be inserted in the database
      * @param {Response} res Represents response to the client, including the body formatted as JSON containing the
      * new tuit that was inserted into the database
      * @param {NextFunction} next Error handling function
      */
-    createTuit = (req: Request, res: Response, next: NextFunction): void => {
-        TuitController.tuitDao.createTuit(req.body)
+    createTuitByUser = (req: Request, res: Response, next: NextFunction): void => {
+        TuitController.tuitDao.createTuitByUser(req.params.userid, req.body)
             .then(tuit => res.json(tuit))
             .catch(next);
     }

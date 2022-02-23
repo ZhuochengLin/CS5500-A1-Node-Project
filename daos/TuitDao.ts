@@ -4,6 +4,7 @@
 import {TuitDaoI} from "../interfaces/TuitDaoI";
 import {Tuit} from "../models/Tuit";
 import TuitModel from "../mongoose/TuitModel";
+import {UserDao} from "./UserDao";
 
 /**
  * Implements Data Access Object managing data storage of Tuits.
@@ -44,7 +45,7 @@ export class TuitDao implements TuitDaoI {
      * @returns {Promise} To be notified when the tuit is retrieved from the database
      */
     findTuitById = async(tid: string): Promise<Tuit | null> => {
-        return TuitModel.findById(tid);
+        return TuitModel.findOne({_id: tid});
     }
 
     /**
@@ -58,11 +59,19 @@ export class TuitDao implements TuitDaoI {
 
     /**
      * Inserts a new tuit instance to the databse.
+     * @param {string} uid The user's primary key
      * @param {Tuit} tuit The new tuit instance
      * @returns {Promise} To be notified when the tuit is inserted
      */
-    createTuit = async(tuit: Tuit): Promise<Tuit> => {
-        return TuitModel.create(tuit);
+    createTuitByUser = async(uid: string, tuit: Tuit): Promise<Tuit> => {
+        return UserDao.getInstance().findUserById(uid)
+            .then((user) => {
+                if (user) {
+                    return TuitModel.create({...tuit, postedBy: uid});
+                } else {
+                    throw new ReferenceError(`User ${uid} does not exist.`);
+                }
+            })
     }
 
     /**
