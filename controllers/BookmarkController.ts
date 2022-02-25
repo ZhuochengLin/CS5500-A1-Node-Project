@@ -15,10 +15,6 @@ export class BookmarkController implements BookmarkControllerI {
     private static bookmarkController: BookmarkController | null = null;
     private static bookmarkDao: BookmarkDao = BookmarkDao.getInstance();
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

@@ -14,10 +14,6 @@ export class TuitDao implements TuitDaoI {
 
     private static tuitDao: TuitDao | null = null;
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

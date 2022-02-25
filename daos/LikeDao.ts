@@ -27,10 +27,6 @@ export class LikeDao implements LikeDaoI {
         return LikeDao.likeDao;
     }
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

@@ -33,10 +33,6 @@ export class TuitController implements TuitControllerI {
         return TuitController.tuitController;
     }
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

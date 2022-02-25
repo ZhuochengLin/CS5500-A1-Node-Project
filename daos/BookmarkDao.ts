@@ -16,10 +16,6 @@ export class BookmarkDao implements BookmarkDaoI {
 
     private static bookmarkDao: BookmarkDao | null = null;
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

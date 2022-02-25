@@ -25,10 +25,6 @@ export class UserDao implements UserDaoI {
         return UserDao.userDao;
     }
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

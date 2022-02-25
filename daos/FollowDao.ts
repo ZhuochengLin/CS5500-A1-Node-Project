@@ -15,10 +15,6 @@ export class FollowDao implements FollowDaoI {
 
     private static followDao: FollowDao | null = null;
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

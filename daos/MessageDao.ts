@@ -17,10 +17,6 @@ export class MessageDao implements MessageDaoI {
 
     private static messageDao: MessageDao | null = null;
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

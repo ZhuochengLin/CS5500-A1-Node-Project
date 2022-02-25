@@ -6,7 +6,7 @@ import {MessageDao} from "../daos/MessageDao";
 import {Express, NextFunction, Request, Response} from "express";
 
 /**
- * Implements RESTful Web service API for messages resource.
+ * MessageController Implements RESTful Web service API for messages resource.
  * @property {MessageDao} messageDao Singleton DAO implementing message CRUD operations
  * @property {MessageController} messageController Singleton controller implementing RESTful web service API
  */
@@ -15,10 +15,6 @@ export class MessageController implements MessageControllerI {
     private static messageController: MessageController | null = null;
     private static messageDao: MessageDao = MessageDao.getInstance();
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

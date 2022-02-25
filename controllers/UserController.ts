@@ -32,10 +32,6 @@ export class UserController implements UserControllerI {
         return UserController.userController;
     }
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

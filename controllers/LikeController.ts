@@ -15,10 +15,6 @@ export class LikeController implements LikeControllerI {
     private static likeController: LikeController | null = null;
     private static likeDao: LikeDao = LikeDao.getInstance();
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {};
 
     /**

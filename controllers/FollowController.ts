@@ -15,10 +15,6 @@ export class FollowController implements FollowControllerI{
     private static followController: FollowController | null = null;
     private static followDao: FollowDao = FollowDao.getInstance();
 
-    /**
-     * A private constructor for singleton pattern.
-     * @private
-     */
     private constructor() {}
 
     /**

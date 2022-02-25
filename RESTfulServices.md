@@ -72,7 +72,7 @@ from the database, which is a "read/retrieve" operation (GET). No data change.
 * HTTP method: GET
 * Path: ```/api/users/:uid/bookmarks```
 * Request: User's PK
-* Response: Bookmarked Tuit JSON array
+* Response: Tuit JSON array
 
 ### 4. (Extra) User views a list of users who bookmarked a certain tuit
 * Analysis: Viewing a list of users who bookmarked a tuit will read data from the 
@@ -88,7 +88,7 @@ a "read/retrieve" operation (GET). Might be useful when debugging and testing.
 * HTTP method: GET
 * Path: ```/api/bookmarks```
 * Request: None
-* Response: A nested JSON array that include all bookmarked tuits of each user.
+* Response: Bookmark JSON array that include all bookmarked tuits of each user.
 
 ## Design the Messages RESTful Web Service API
 ### 1. User sends a message to another user
@@ -97,7 +97,7 @@ reflect the action, which will be a "create" operation (POST).
 * HTTP method: POST
 * Path: ```/api/users/:uida/messages/:uidb```
 * Request: User A's PK (sender), User B's PK (receiver), and message in the body
-* Response: New message JSON with message's PK
+* Response: New Message JSON with message's PK
 
 ### 2. User views a list of messages they have sent
 * Analysis: When a user views a list of sent messages, the data will be retrieved from the database,
