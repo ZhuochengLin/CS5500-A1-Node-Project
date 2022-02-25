@@ -33,6 +33,7 @@ export class BookmarkController implements BookmarkControllerI {
             app.delete("/api/users/:uid/bookmarks/:tid", BookmarkController.bookmarkController.userUnbookmarksTuit);
             app.get("/api/users/:uid/bookmarks", BookmarkController.bookmarkController.findBookmarkedTuitsByUser);
             app.get("/api/bookmarks", BookmarkController.bookmarkController.findAllBookmarks);
+            app.get("/api/bookmarks/:tid", BookmarkController.bookmarkController.findUserWhoBookmarkedTuit);
         }
         return BookmarkController.bookmarkController;
     }
@@ -70,11 +71,25 @@ export class BookmarkController implements BookmarkControllerI {
      * @param {Request} req Represents request from the client, including path parameter uid
      * identifying the primary key of the user object
      * @param {Response} res Represents response to the client, including the body formatted
-     * as JSON array containing the tuits that followed by the user
+     * as JSON array containing the tuits that bookmarked by the user
      * @param {NextFunction} next Error handling function
      */
     findBookmarkedTuitsByUser = (req: Request, res: Response, next: NextFunction): void => {
         BookmarkController.bookmarkDao.findBookmarkedTuitsByUser(req.params.uid)
+            .then((bookmarks) => res.json(bookmarks))
+            .catch(next);
+    }
+
+    /**
+     * Retrieves a list of users who bookmarked the specified tuit.
+     * @param {Request} req Represents request from the client, including path parameter tid
+     * identifying the primary key of the tuit object
+     * @param {Response} res Represents response to the client, including the body formatted
+     * as JSON array containing the users who bookmarked the tuit
+     * @param {NextFunction} next Error handling function
+     */
+    findUserWhoBookmarkedTuit = (req: Request, res: Response, next: NextFunction) => {
+        BookmarkController.bookmarkDao.findUserWhoBookmarkedTuit(req.params.tid)
             .then((bookmarks) => res.json(bookmarks))
             .catch(next);
     }

@@ -34,6 +34,7 @@ export class FollowController implements FollowControllerI{
             app.get("/api/users/:uid/follows", FollowController.followController.findFollowingsByUser);
             app.get("/api/follows/:uid", FollowController.followController.findFollowersByUser);
             app.get("/api/follows", FollowController.followController.findAllFollows);
+            app.delete("/api/follows", FollowController.followController.deleteAllFollows);
         }
         return FollowController.followController;
     }
@@ -102,6 +103,15 @@ export class FollowController implements FollowControllerI{
     findAllFollows = (req: Request, res: Response): void => {
         FollowController.followDao.findAllFollows()
             .then((likes) => res.json(likes));
+    }
+
+    /**
+     * Deletes all follows records in the database.
+     * @param {Request} req Represents request from the client
+     * @param {Response} res Represents response to the client
+     */
+    deleteAllFollows = (req: Request, res: Response): void => {
+        FollowController.followDao.deleteAllFollows().then((status) => res.json(status));
     }
 
 }

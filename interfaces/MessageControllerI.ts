@@ -8,5 +8,6 @@ export interface MessageControllerI {
     findSentMessagesByUser(req: Request, res: Response, next: NextFunction): void;
     findReceivedMessagesByUser(req: Request, res: Response, next: NextFunction): void;
     deleteMessage(req: Request, res: Response, next: NextFunction): void;
+    deleteMessagesFromUserAToUserB(req: Request, res: Response, next: NextFunction): void;
     findAllMessages(req: Request, res: Response): void;
 }

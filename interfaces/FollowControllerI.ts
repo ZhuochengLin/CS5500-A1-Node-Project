@@ -9,4 +9,5 @@ export interface FollowControllerI {
     findFollowersByUser(req: Request, res: Response, next: NextFunction): void;
     findFollowingsByUser(req: Request, res: Response, next: NextFunction): void;
     findAllFollows(req: Request, res: Response): void;
+    deleteAllFollows(req: Request, res: Response): void;
 }

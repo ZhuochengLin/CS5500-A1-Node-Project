@@ -76,6 +76,15 @@ export class BookmarkDao implements BookmarkDaoI {
     }
 
     /**
+     * Retrieves a list of users who bookmarked the specified tuit.
+     * @param {string} tid Tuit's primary key
+     * @returns {Promise} To be notified when the list of users is retrieved from the database
+     */
+    findUserWhoBookmarkedTuit = async(tid: string): Promise<Bookmark[]> => {
+        return BookmarkModel.find({tuit: tid}).populate("bookmarkedBy").exec();
+    }
+
+    /**
      * Retrieves all the bookmarks from the database.
      * @returns {Promise} To be notified when the list of bookmarks is retrieved
      */

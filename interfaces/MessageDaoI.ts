@@ -8,5 +8,6 @@ export interface MessageDaoI {
     findSentMessagesByUser(uid: string): Promise<Message[]>;
     findReceivedMessagesByUser(uid: string): Promise<Message[]>;
     deleteMessage(mid: string): Promise<any>;
+    deleteMessagesFromUserAToUserB(uida: string, uidb: string): Promise<any>;
     findAllMessages(): Promise<Message[]>;
 }

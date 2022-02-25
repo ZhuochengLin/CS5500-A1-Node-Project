@@ -39,6 +39,9 @@ export class FollowDao implements FollowDaoI {
      * @returns {Promise} To be notified when the follow is inserted into the database
      */
     userAFollowsUserB = async(uida: string, uidb: string): Promise<Follow> => {
+        if (uida === uidb) {
+            throw new Error("User cannot follow himself/herself.");
+        }
         const userA = await UserDao.getInstance().findUserById(uida);
         const userB = await UserDao.getInstance().findUserById(uidb);
         if (userA) {
@@ -89,6 +92,14 @@ export class FollowDao implements FollowDaoI {
      */
     findAllFollows = async(): Promise<Follow[]> => {
         return FollowModel.find();
+    }
+
+    /**
+     * Deletes all follows records in the database.
+     * @returns {Promise} To be notified when all the records are deleted
+     */
+    deleteAllFollows = async(): Promise<any> => {
+        return FollowModel.deleteMany();
     }
 
 }

@@ -89,6 +89,19 @@ export class MessageDao implements MessageDaoI {
     }
 
     /**
+     * Deletes all messages sent from User A to User B.
+     * @param {string} uida User A's primary key
+     * @param {string} uidb User B's primary key
+     * @returns {Promise} To be notified when the messages are deleted.
+     */
+    deleteMessagesFromUserAToUserB = async(uida: string, uidb: string): Promise<any> => {
+        if (uida === uidb) {
+            throw new Error("User cannot send messages to himself/herself.");
+        }
+        return MessageModel.deleteMany({sender: uida, receiver: uidb});
+    }
+
+    /**
      * Retrieves all messages from the database.
      * @returns {Promise} To be notified when the messages are retrieved
      */

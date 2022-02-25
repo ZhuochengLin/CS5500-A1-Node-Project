@@ -34,6 +34,7 @@ export class MessageController implements MessageControllerI {
             app.get("/api/messages/:uid", MessageController.messageController.findReceivedMessagesByUser);
             app.delete("/api/messages/:mid", MessageController.messageController.deleteMessage);
             app.get("/api/messages", MessageController.messageController.findAllMessages);
+            app.delete("/api/users/:uida/messages/:uidb", MessageController.messageController.deleteMessagesFromUserAToUserB);
         }
         return MessageController.messageController;
     }
@@ -91,6 +92,20 @@ export class MessageController implements MessageControllerI {
      */
     deleteMessage = (req: Request, res: Response, next: NextFunction): void => {
         MessageController.messageDao.deleteMessage(req.params.mid)
+            .then((status) => res.json(status))
+            .catch(next);
+    }
+
+    /**
+     * Deletes all messages sent from User A to User B.
+     * @param {Request} req Represents request from the client, including the path parameter uida
+     * and uidb identifying the primary key of User A and User B
+     * @param {Response} res Represents response to the client, including status on
+     * whether deleting was successful or not
+     * @param {NextFunction} next Error handling function
+     */
+    deleteMessagesFromUserAToUserB = (req: Request, res: Response, next: NextFunction): void => {
+        MessageController.messageDao.deleteMessagesFromUserAToUserB(req.params.uida, req.params.uidb)
             .then((status) => res.json(status))
             .catch(next);
     }

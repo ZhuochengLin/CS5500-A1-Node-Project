@@ -64,7 +64,14 @@ export class UserDao implements UserDaoI {
      * @returns {Promise} To be notified when user is updated in the database
      */
     updateUser = async(uid: string, user: User): Promise<any> => {
-        return UserModel.updateOne({_id: uid}, {$set: user});
+        return UserModel.findOne({_id: uid})
+            .then((user) => {
+                if (user) {
+                    return UserModel.updateOne({_id: uid}, {$set: user});
+                } else {
+                    throw new ReferenceError(`User ${uid} does not exist.`);
+                }
+            })
     }
 
     /**
