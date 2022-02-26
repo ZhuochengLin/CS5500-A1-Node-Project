@@ -9,9 +9,9 @@ import {UserDao} from "./UserDao";
 import {TuitDao} from "./TuitDao";
 
 /**
- * * Implements Data Access Object managing data storage of likes.
- *  * @property {LikeDao} likeDao Private single instance of LikeDao
- *  */
+ * Implements Data Access Object managing data storage of likes.
+ * @property {LikeDao} likeDao Private single instance of LikeDao
+ **/
 export class LikeDao implements LikeDaoI {
 
     private static likeDao: LikeDao | null = null;

@@ -38,6 +38,9 @@ export class MessageDao implements MessageDaoI {
      * @returns {Promise} To be notified when the message is inserted
      */
     userASendsMessageToUserB = async(uida: string, uidb: string, msg: Message): Promise<Message> => {
+        if (uida === uidb) {
+            throw new Error("User cannot send messages to himself/herself.");
+        }
         const msg_content = msg["message"];
         if (msg_content) {
             const userA = await UserDao.getInstance().findUserById(uida);
@@ -91,9 +94,6 @@ export class MessageDao implements MessageDaoI {
      * @returns {Promise} To be notified when the messages are deleted.
      */
     deleteMessagesFromUserAToUserB = async(uida: string, uidb: string): Promise<any> => {
-        if (uida === uidb) {
-            throw new Error("User cannot send messages to himself/herself.");
-        }
         return MessageModel.deleteMany({sender: uida, receiver: uidb});
     }
 
