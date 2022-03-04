@@ -28,6 +28,7 @@ export class UserController implements UserControllerI {
             app.post("/api/users", UserController.userController.createUser);
             app.delete("/api/users/:userid", UserController.userController.deleteUser);
             app.put("/api/users/:userid", UserController.userController.updateUser);
+            app.delete("/api/users/username/:name", UserController.userController.deleteUserByName);
         }
         return UserController.userController;
     }
@@ -97,6 +98,20 @@ export class UserController implements UserControllerI {
      */
     updateUser = (req: Request, res: Response, next: NextFunction) => {
         UserController.userDao.updateUser(req.params.userid, req.body)
+            .then(status => res.json(status))
+            .catch(next);
+    }
+
+    /**
+     * Deletes a user from the database by the username
+     * @param {Request} req Represents request from the client, including the path parameter name identifying
+     * the username
+     * @param {Response} res Represents response to the client, including status on whether deleting was
+     * successful or not
+     * @param next Error handling function
+     */
+    deleteUserByName = (req: Request, res: Response, next: NextFunction) => {
+        UserController.userDao.deleteUserByName(req.params.name)
             .then(status => res.json(status))
             .catch(next);
     }

@@ -72,4 +72,13 @@ export class UserDao implements UserDaoI {
         return UserModel.deleteOne({_id: uid});
     }
 
+    /**
+     * Removes a user from the database by the username
+     * @param {string} name Username
+     * @returns {Promise} To be notified when the user is removed from the database
+     */
+    deleteUserByName = async(name: string): Promise<any> => {
+        return UserModel.deleteOne({username: name});
+    }
+
 }
