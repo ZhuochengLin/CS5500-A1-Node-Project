@@ -24,10 +24,12 @@ import {LikeController} from "./controllers/LikeController";
 import {FollowController} from "./controllers/FollowController";
 import {BookmarkController} from "./controllers/BookmarkController";
 import {MessageController} from "./controllers/MessageController";
+import cors from "cors";
 
 config();
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.get('/hello', (req: Request, res: Response) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req: Request, res: Response) => res.send(req.params.a + req.params.b));
 mongoose.connect(`${process.env.DB_URI}`, (err) => {

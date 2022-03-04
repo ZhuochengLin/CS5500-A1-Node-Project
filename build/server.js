@@ -29,9 +29,11 @@ const LikeController_1 = require("./controllers/LikeController");
 const FollowController_1 = require("./controllers/FollowController");
 const BookmarkController_1 = require("./controllers/BookmarkController");
 const MessageController_1 = require("./controllers/MessageController");
+const cors_1 = __importDefault(require("cors"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 app.get('/hello', (req, res) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req, res) => res.send(req.params.a + req.params.b));
 mongoose_1.default.connect(`${process.env.DB_URI}`, (err) => {
