@@ -2,9 +2,15 @@
  * @file Define Tuit interface that reflects the fields a tuit should have.
  */
 import {User} from "./User";
+import {TuitStats} from "./TuitStats";
 
 export interface Tuit {
-    content: string;
+    tuit: string;
     postedBy: User;
-    postedOn: Date;
+    published: Date;
+    image: string;
+    youtube: string;
+    avatarLogo: string;
+    imageOverlay: string;
+    stats: TuitStats
 }
