@@ -32,7 +32,7 @@ export class TuitDao implements TuitDaoI {
      * @returns {Promise} To be notified when the tuits are retrieved from the database
      */
     findAllTuits = async(): Promise<Tuit[]> => {
-        return TuitModel.find();
+        return TuitModel.find().populate("postedBy").exec();
     }
 
     /**
