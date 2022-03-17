@@ -43,7 +43,7 @@ export class TuitController implements TuitControllerI {
      */
     findAllTuits = (req: Request, res: Response): void => {
         TuitController.tuitDao.findAllTuits()
-            .then(tuis => res.json(tuis));
+            .then(tuits => res.json(tuits));
     }
 
     /**
