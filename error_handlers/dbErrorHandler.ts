@@ -26,7 +26,7 @@ export function dbErrorHandler(err: DBError, req: Request, res: Response, next: 
     if (err.name === "ValidationError" || err.name === "CastError") {
         res.status(500).send(err.message);
     } else if (err.code === 11000) {
-        res.status(500).send(`Duplicate ${Object.keys(err.keyValue)[0]}: ${Object.values(err.keyValue)[0]}`);
+        res.status(403).send(`${Object.keys(err.keyValue)[0]}: ${Object.values(err.keyValue)[0]} already exists.`);
     } else {
         next(err);
     }

@@ -25,9 +25,22 @@ import {FollowController} from "./controllers/FollowController";
 import {BookmarkController} from "./controllers/BookmarkController";
 import {MessageController} from "./controllers/MessageController";
 import cors from "cors";
+import {AuthController} from "./controllers/AuthController";
 
 config();
+const session = require("express-session");
 const app = express();
+let sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        secure: false
+    }
+}
+if (process.env.ENV === "PRODUCTION") {
+    app.set("trust proxy", 1);
+    sess.cookie.secure = true;
+}
+app.use(session(sess));
 app.use(express.json());
 app.use(cors());
 app.get('/hello', (req: Request, res: Response) => res.send('Hello World!'));
@@ -43,6 +56,7 @@ const likeController = LikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
+const authController = AuthController.getInstance(app);
 
 /**
  * Starts a server listening at port 4000 locally or
