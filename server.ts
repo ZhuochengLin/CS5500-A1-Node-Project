@@ -42,7 +42,10 @@ if (process.env.ENV === "PRODUCTION") {
 }
 app.use(session(sess));
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+}));
 app.get('/hello', (req: Request, res: Response) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req: Request, res: Response) => res.send(req.params.a + req.params.b));
 mongoose.connect(`${process.env.DB_URI}`, (err) => {
