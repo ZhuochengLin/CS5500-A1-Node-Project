@@ -30,22 +30,22 @@ import {AuthController} from "./controllers/AuthController";
 config();
 const session = require("express-session");
 const app = express();
+app.use(cors({
+    credentials: true,
+    origin: true
+}));
 let sess = {
     secret: process.env.SECRET,
     cookie: {
         secure: false
     }
 }
-// if (process.env.ENV === "PRODUCTION") {
-//     app.set("trust proxy", 1);
-//     sess.cookie.secure = true;
-// }
+if (process.env.ENV === "PRODUCTION") {
+    app.set("trust proxy", 1);
+    sess.cookie.secure = true;
+}
 app.use(session(sess));
 app.use(express.json());
-app.use(cors({
-    credentials: true,
-    origin: true
-}));
 app.get('/hello', (req: Request, res: Response) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req: Request, res: Response) => res.send(req.params.a + req.params.b));
 mongoose.connect(`${process.env.DB_URI}`, (err) => {
