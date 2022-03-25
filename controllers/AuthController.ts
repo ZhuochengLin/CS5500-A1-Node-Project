@@ -13,7 +13,7 @@ export class AuthController {
     public static getInstance = (app: Express) => {
         if (AuthController.authController === null) {
             AuthController.authController = new AuthController();
-            app.get("/api/auth/profile", AuthController.authController.profile);
+            app.post("/api/auth/profile", AuthController.authController.profile);
             app.post("/api/auth/signup", AuthController.authController.signup);
             app.post("/api/auth/logout", AuthController.authController.logout);
         }
