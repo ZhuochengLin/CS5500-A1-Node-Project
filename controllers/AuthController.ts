@@ -37,6 +37,7 @@ export class AuthController {
 
     profile = (req: any, res: Response, next: NextFunction) => {
         const profile = req.session["profile"];
+        console.log(profile)
         if (profile) {
             profile.password = "";
             res.json(profile);
