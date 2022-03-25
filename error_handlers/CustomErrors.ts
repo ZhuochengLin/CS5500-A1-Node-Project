@@ -1,5 +1,3 @@
-import {Error} from "mongoose";
-
 export class NoUserLoggedInError extends Error {
 
     constructor() {
@@ -15,9 +13,7 @@ export class DuplicateUserError extends Error {
     }
 
 }
-/**
- * Declares a custom error interface.
- */
+
 export interface DBError extends Error {
     code: number;
     keyValue: object;

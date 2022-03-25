@@ -11,6 +11,6 @@ import {NextFunction, Request, Response} from "express";
  * @param {NextFunction} next Next error handling function
  */
 export function LogErrors(err: Error, req: Request, res: Response, next: NextFunction) {
-    console.error(err.stack);
+    console.error(err);
     next(err);
 }

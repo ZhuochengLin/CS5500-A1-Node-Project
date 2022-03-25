@@ -14,7 +14,7 @@ import {DBError} from "./CustomErrors";
  */
 export function DbErrorHandler(err: DBError, req: Request, res: Response, next: NextFunction) {
     if (err.name === "ValidationError" || err.name === "CastError") {
-        res.status(500).send(err.message);
+        res.status(403).send(err.message);
     } else if (err.code === 11000) {
         res.status(403).send(`${Object.keys(err.keyValue)[0]}: ${Object.values(err.keyValue)[0]} already exists.`);
     } else {
