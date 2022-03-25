@@ -20,9 +20,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = require("dotenv");
-const logErrors_1 = require("./error_handlers/logErrors");
-const dbErrorHandler_1 = require("./error_handlers/dbErrorHandler");
-const errorHandler_1 = require("./error_handlers/errorHandler");
+const LogErrors_1 = require("./error_handlers/LogErrors");
+const DbErrorHandler_1 = require("./error_handlers/DbErrorHandler");
+const ErrorHandler_1 = require("./error_handlers/ErrorHandler");
 const TuitController_1 = require("./controllers/TuitController");
 const UserController_1 = require("./controllers/UserController");
 const LikeController_1 = require("./controllers/LikeController");
@@ -69,7 +69,7 @@ const authController = AuthController_1.AuthController.getInstance(app);
  * using environment variable POT on Heroku if applicable
  */
 const PORT = 4000;
-app.use(logErrors_1.logErrors);
-app.use(dbErrorHandler_1.dbErrorHandler);
-app.use(errorHandler_1.errorHandler);
+app.use(LogErrors_1.LogErrors);
+app.use(DbErrorHandler_1.DbErrorHandler);
+app.use(ErrorHandler_1.ErrorHandler);
 app.listen(process.env.PORT || PORT);

@@ -15,9 +15,9 @@
 import express, {Request, Response} from 'express';
 import mongoose from "mongoose";
 import {config} from "dotenv";
-import {logErrors} from "./error_handlers/logErrors";
-import {dbErrorHandler} from "./error_handlers/dbErrorHandler";
-import {errorHandler} from "./error_handlers/errorHandler";
+import {LogErrors} from "./error_handlers/LogErrors";
+import {DbErrorHandler} from "./error_handlers/DbErrorHandler";
+import {ErrorHandler} from "./error_handlers/ErrorHandler";
 import {TuitController} from "./controllers/TuitController";
 import {UserController} from "./controllers/UserController";
 import {LikeController} from "./controllers/LikeController";
@@ -66,7 +66,7 @@ const authController = AuthController.getInstance(app);
  * using environment variable POT on Heroku if applicable
  */
 const PORT = 4000;
-app.use(logErrors);
-app.use(dbErrorHandler);
-app.use(errorHandler);
+app.use(LogErrors);
+app.use(DbErrorHandler);
+app.use(ErrorHandler);
 app.listen(process.env.PORT || PORT);

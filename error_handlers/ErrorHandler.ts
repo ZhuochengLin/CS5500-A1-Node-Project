@@ -10,6 +10,6 @@ import {NextFunction, Request, Response} from "express";
  * @param {Response} res Represents the response to the client
  * @param {NextFunction} next Next error handling function
  */
-export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-    res.status(500).send(err.message);
+export function ErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
+    res.status(403).send(err.message);
 }

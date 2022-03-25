@@ -25,6 +25,7 @@ export class UserController implements UserControllerI {
             UserController.userController = new UserController();
             app.get("/api/users", UserController.userController.findAllUsers);
             app.get("/api/users/:userid", UserController.userController.findUserById);
+            app.get("/api/users/username/:uname", UserController.userController.findUserByName);
             app.post("/api/users", UserController.userController.createUser);
             app.delete("/api/users/:userid", UserController.userController.deleteUser);
             app.put("/api/users/:userid", UserController.userController.updateUser);
@@ -56,6 +57,20 @@ export class UserController implements UserControllerI {
      */
     findUserById = (req: Request, res: Response, next: NextFunction) => {
         UserController.userDao.findUserById(req.params.userid)
+            .then(user => res.json(user))
+            .catch(next);
+    }
+
+    /**
+     * Retrieves the user object by its username.
+     * @param {Request} req Represents request from the client, including path parameter uid
+     * identifying the username of the user object
+     * @param {Response} res Represents response to the client, including the body formatted
+     * as JSON containing the user that matches the username
+     * @param {NextFunction} next Error handling function
+     */
+    findUserByName = (req: Request, res: Response, next: NextFunction) => {
+        UserController.userDao.findUserByName(req.params.uname)
             .then(user => res.json(user))
             .catch(next);
     }
