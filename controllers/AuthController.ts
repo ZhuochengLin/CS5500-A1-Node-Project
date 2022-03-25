@@ -16,8 +16,14 @@ export class AuthController {
             app.get("/api/auth/profile", AuthController.authController.profile);
             app.post("/api/auth/signup", AuthController.authController.signup);
             app.post("/api/auth/logout", AuthController.authController.logout);
+            app.post("/api/auth/setprofile", AuthController.authController.setProfile);
         }
         return AuthController.authController;
+    }
+
+    setProfile = async (req:any, res: Response) => {
+        req.session["profile"] = {username: "Lin"};
+        res.send(200);
     }
 
     signup = async (req: any, res: Response, next: NextFunction) => {

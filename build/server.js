@@ -32,34 +32,23 @@ const MessageController_1 = require("./controllers/MessageController");
 const cors_1 = __importDefault(require("cors"));
 const AuthController_1 = require("./controllers/AuthController");
 (0, dotenv_1.config)();
-const app = (0, express_1.default)();
 const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
-const store = new MongoDBStore({
-    uri: process.env.DB_URI,
-    collection: "mySessions"
-});
-store.on("error", function (error) {
-    console.log(error);
-});
+const app = (0, express_1.default)();
 let sess = {
     secret: process.env.SECRET,
     cookie: {
         secure: false
-    },
-    store: store,
-    resave: true,
-    saveUninitialized: true
+    }
 };
-if (process.env.ENV === "PRODUCTION") {
-    app.set("trust proxy", 1);
-    sess.cookie.secure = true;
-}
+// if (process.env.ENV === "PRODUCTION") {
+//     app.set("trust proxy", 1);
+//     sess.cookie.secure = true;
+// }
 app.use(session(sess));
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     credentials: true,
-    origin: "http://localhost:3000"
+    origin: true
 }));
 app.get('/hello', (req, res) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req, res) => res.send(req.params.a + req.params.b));
