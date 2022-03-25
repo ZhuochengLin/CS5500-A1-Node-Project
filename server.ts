@@ -34,14 +34,12 @@ let sess = {
     secret: process.env.SECRET,
     cookie: {
         secure: false
-    },
-    resave: false,
-    saveUninitialized: true
+    }
 }
-if (process.env.ENV === "PRODUCTION") {
-    app.set("trust proxy", 1);
-    sess.cookie.secure = true;
-}
+// if (process.env.ENV === "PRODUCTION") {
+//     app.set("trust proxy", 1);
+//     sess.cookie.secure = true;
+// }
 app.use(session(sess));
 app.use(express.json());
 app.use(cors({
