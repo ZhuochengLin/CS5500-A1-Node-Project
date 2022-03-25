@@ -41,7 +41,7 @@ let sess = {
     }
 }
 if (process.env.ENV === "PRODUCTION") {
-    app.set("trust proxy", 1);
+    app.enable("trust proxy");
     sess.cookie.secure = true;
 }
 app.use(session(sess));

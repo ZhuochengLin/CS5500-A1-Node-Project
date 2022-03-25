@@ -34,22 +34,22 @@ const AuthController_1 = require("./controllers/AuthController");
 (0, dotenv_1.config)();
 const session = require("express-session");
 const app = (0, express_1.default)();
-let sess = {
-    secret: process.env.SECRET,
-    cookie: {
-        secure: false
-    }
-};
-// if (process.env.ENV === "PRODUCTION") {
-//     app.set("trust proxy", 1);
-//     sess.cookie.secure = true;
-// }
-app.use(session(sess));
-app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     credentials: true,
     origin: true
 }));
+let sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        secure: true
+    }
+};
+if (process.env.ENV === "PRODUCTION") {
+    app.set("trust proxy", 1);
+    sess.cookie.secure = true;
+}
+app.use(session(sess));
+app.use(express_1.default.json());
 app.get('/hello', (req, res) => res.send('Hello World!'));
 app.get('/add/:a/:b', (req, res) => res.send(req.params.a + req.params.b));
 mongoose_1.default.connect(`${process.env.DB_URI}`, (err) => {
