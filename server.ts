@@ -28,19 +28,35 @@ import cors from "cors";
 import {AuthController} from "./controllers/AuthController";
 
 config();
-const session = require("express-session");
 const app = express();
+
+// session setup
+const session = require("express-session");
+// store session in mongodb
+const MongoDBStore = require("connect-mongodb-session")(session);
+const store = new MongoDBStore({
+    uri: process.env.DB_URI,
+    collection: "mySessions"
+});
+store.on("error", function (error: any) {
+    console.log(error);
+})
+
 let sess = {
     secret: process.env.SECRET,
     cookie: {
         secure: false
-    }
+    },
+    store: store,
+    resave: true,
+    saveUninitialized: true
 }
 if (process.env.ENV === "PRODUCTION") {
     app.set("trust proxy", 1);
     sess.cookie.secure = true;
 }
 app.use(session(sess));
+
 app.use(express.json());
 app.use(cors({
     credentials: true,

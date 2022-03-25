@@ -32,13 +32,24 @@ const MessageController_1 = require("./controllers/MessageController");
 const cors_1 = __importDefault(require("cors"));
 const AuthController_1 = require("./controllers/AuthController");
 (0, dotenv_1.config)();
-const session = require("express-session");
 const app = (0, express_1.default)();
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const store = new MongoDBStore({
+    uri: process.env.DB_URI,
+    collection: "mySessions"
+});
+store.on("error", function (error) {
+    console.log(error);
+});
 let sess = {
     secret: process.env.SECRET,
     cookie: {
         secure: false
-    }
+    },
+    store: store,
+    resave: true,
+    saveUninitialized: true
 };
 if (process.env.ENV === "PRODUCTION") {
     app.set("trust proxy", 1);
