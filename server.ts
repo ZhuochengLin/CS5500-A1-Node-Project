@@ -37,12 +37,14 @@ app.use(cors({
 let sess = {
     secret: process.env.SECRET,
     cookie: {
-        secure: false
+        secure: false,
+        sameSite: "strict"
     }
 }
 if (process.env.ENV === "PRODUCTION") {
     app.enable("trust proxy");
     sess.cookie.secure = true;
+    sess.cookie.sameSite = "none";
 }
 app.use(session(sess));
 app.use(express.json());
