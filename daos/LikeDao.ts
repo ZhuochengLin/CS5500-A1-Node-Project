@@ -7,6 +7,8 @@ import {Like} from "../models/Like";
 import LikeModel from "../mongoose/LikeModel";
 import {UserDao} from "./UserDao";
 import {TuitDao} from "./TuitDao";
+import likeModel from "../mongoose/LikeModel";
+import {NoSuchTuitError, NoSuchUserError} from "../error_handlers/CustomErrors";
 
 /**
  * Implements Data Access Object managing data storage of likes.
@@ -44,10 +46,10 @@ export class LikeDao implements LikeDaoI {
                     return like === null ? LikeModel.create({tuit: tid, likedBy: uid}) : like;
                 })
             } else {
-                throw new ReferenceError(`Tuit ${tid} does not exist.`)
+                throw new NoSuchTuitError()
             }
         } else {
-            throw new ReferenceError(`User ${uid} does not exist.`);
+            throw new NoSuchUserError();
         }
     }
 
@@ -76,7 +78,7 @@ export class LikeDao implements LikeDaoI {
      * @returns {Promise} To be notified when the list of tuits are retrieved from the database
      */
     findAllTuitsLikedByUser = async(uid: string): Promise<Like[]> => {
-        return LikeModel.find({likedBy: uid}).populate("tuit").exec();
+        return LikeModel.find({likedBy: uid}).populate(["tuit", "likedBy"]).exec();
     }
 
     /**
@@ -85,6 +87,14 @@ export class LikeDao implements LikeDaoI {
      */
     findAllLikes = async(): Promise<Like[]> => {
         return LikeModel.find();
+    }
+
+    findUserLikedTuit = async (uid: string, tid: string): Promise<Like | null> => {
+        return LikeModel.findOne({tuit: tid, likedBy: uid});
+    }
+
+    countHowManyLikedTuit = async (tid: string): Promise<number> => {
+        return likeModel.countDocuments({tuit: tid});
     }
 
 }

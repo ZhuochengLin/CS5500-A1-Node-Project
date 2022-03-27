@@ -4,6 +4,9 @@
 import {TuitControllerI} from "../interfaces/TuitControllerI";
 import {Express, NextFunction, Request, Response} from "express";
 import {TuitDao} from "../daos/TuitDao";
+import {LikeDao} from "../daos/LikeDao";
+import {NoSuchTuitError, NoUserLoggedInError} from "../error_handlers/CustomErrors";
+import {DislikeDao} from "../daos/DislikeDao";
 
 /**
  * Implements RESTful Web service API for tuits resource.
@@ -14,6 +17,8 @@ export class TuitController implements TuitControllerI {
 
     private static tuitDao: TuitDao = TuitDao.getInstance();
     private static tuitController: TuitController | null = null;
+    private static likeDao: LikeDao = LikeDao.getInstance();
+    private static dislikeDao: DislikeDao = DislikeDao.getInstance();
 
     /**
      * Creates singleton controller instance.
@@ -25,10 +30,12 @@ export class TuitController implements TuitControllerI {
             TuitController.tuitController = new TuitController();
             app.get("/api/tuits", TuitController.tuitController.findAllTuits);
             app.get("/api/tuits/:tuitid", TuitController.tuitController.findTuitById);
-            app.get("/api/users/:userid/tuits", TuitController.tuitController.findTuitsByUser);
-            app.post("/api/users/:userid/tuits/", TuitController.tuitController.createTuitByUser);
+            app.get("/api/users/:uid/tuits", TuitController.tuitController.findTuitsByUser);
+            app.post("/api/users/:uid/tuits/", TuitController.tuitController.createTuitByUser);
             app.delete("/api/tuits/:tuitid", TuitController.tuitController.deleteTuit);
             app.put("/api/tuits/:tuitid", TuitController.tuitController.updateTuit);
+            app.put("/api/users/:uid/likes/:tid", TuitController.tuitController.userTogglesTuitLikes);
+            app.put("/api/users/:uid/dislikes/:tid", TuitController.tuitController.userTogglesTuitDislikes);
         }
         return TuitController.tuitController;
     }
@@ -68,8 +75,9 @@ export class TuitController implements TuitControllerI {
      * as JSON array containing the tuits posted by the user
      * @param {NextFunction} next Error handling function
      */
-    findTuitsByUser = (req: Request, res: Response, next: NextFunction): void => {
-        TuitController.tuitDao.findTuitsByUser(req.params.userid)
+    findTuitsByUser = (req: any, res: Response, next: NextFunction): void => {
+        const userId = req.params.uid === "me" && req.session["profile"] ? req.session["profile"]._id : req.params.uid;
+        TuitController.tuitDao.findTuitsByUser(userId)
             .then(tuits => res.json(tuits))
             .catch(next);
     }
@@ -83,8 +91,9 @@ export class TuitController implements TuitControllerI {
      * new tuit that was inserted into the database
      * @param {NextFunction} next Error handling function
      */
-    createTuitByUser = (req: Request, res: Response, next: NextFunction): void => {
-        TuitController.tuitDao.createTuitByUser(req.params.userid, req.body)
+    createTuitByUser = (req: any, res: Response, next: NextFunction): void => {
+        let userId = req.params.uid === "me" && req.session["profile"] ? req.session["profile"]._id: req.params.uid;
+        TuitController.tuitDao.createTuitByUser(userId, req.body)
             .then(tuit => res.json(tuit))
             .catch(next);
     }
@@ -115,5 +124,67 @@ export class TuitController implements TuitControllerI {
         TuitController.tuitDao.updateTuit(req.params.tuitid, req.body)
             .then(status => res.json(status))
             .catch(next);
+    }
+
+    userTogglesTuitLikes = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+        const uid = req.params.uid;
+        const tid = req.params.tid;
+        const profile = req.session["profile"];
+        if (uid === "me" && !profile) {
+            next(new NoUserLoggedInError());
+            return
+        }
+        let tuit = await TuitController.tuitDao.findTuitById(tid);
+        if (!tuit) {
+            next(new NoSuchTuitError())
+            return
+        }
+        const userId = uid === "me" && profile ? profile._id : uid;
+        const userAlreadyLikedTuit = await TuitController.likeDao.findUserLikedTuit(userId, tid);
+        try {
+            if (userAlreadyLikedTuit) {
+                await TuitController.likeDao.userUnlikesTuit(userId, tid);
+            } else {
+                await TuitController.likeDao.userLikesTuit(userId, tid);
+                await TuitController.dislikeDao.userLikesTuit(userId, tid);
+                tuit.stats.dislikes = await TuitController.dislikeDao.countHowManyDislikedTuit(tid);
+            }
+            tuit.stats.likes = await TuitController.likeDao.countHowManyLikedTuit(tid);
+            await TuitController.tuitDao.updateTuit(tid, tuit);
+            res.sendStatus(200);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    userTogglesTuitDislikes = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+        const uid = req.params.uid;
+        const tid = req.params.tid;
+        const profile = req.session["profile"];
+        if (uid === "me" && !profile) {
+            next(new NoUserLoggedInError());
+            return
+        }
+        let tuit = await TuitController.tuitDao.findTuitById(tid);
+        if (!tuit) {
+            next(new NoSuchTuitError())
+            return
+        }
+        const userId = uid === "me" && profile ? profile._id : uid;
+        const userAlreadyDislikedTuit = await TuitController.dislikeDao.findUserDislikedTuit(userId, tid);
+        try {
+            if (userAlreadyDislikedTuit) {
+                await TuitController.dislikeDao.userLikesTuit(userId, tid);
+            } else {
+                await TuitController.dislikeDao.userUnlikesTuit(userId, tid);
+                await TuitController.likeDao.userUnlikesTuit(userId, tid);
+                tuit.stats.likes = await TuitController.likeDao.countHowManyLikedTuit(tid);
+            }
+            tuit.stats.dislikes = await TuitController.dislikeDao.countHowManyDislikedTuit(tid);
+            await TuitController.tuitDao.updateTuit(tid, tuit);
+            res.sendStatus(200);
+        } catch (e) {
+            next(e);
+        }
     }
 }

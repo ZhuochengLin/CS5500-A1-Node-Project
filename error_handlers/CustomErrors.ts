@@ -1,3 +1,18 @@
+export class NoSuchUserError extends Error {
+
+    constructor() {
+        super("No such user.");
+    }
+
+}
+
+export class NoSuchTuitError extends Error {
+    constructor() {
+        super("No such tuit.");
+    }
+
+}
+
 export class NoUserLoggedInError extends Error {
 
     constructor() {
@@ -8,8 +23,24 @@ export class NoUserLoggedInError extends Error {
 
 export class DuplicateUserError extends Error {
 
-    constructor(username: string) {
-        super(`${username} already exists`);
+    constructor() {
+        super("User already exists.");
+    }
+
+}
+
+export class IncorrectCredentialError extends Error {
+
+    constructor() {
+        super("Username and password do not match.");
+    }
+
+}
+
+export class EmptyTuitError extends Error {
+
+    constructor() {
+        super("Empty tuit content");
     }
 
 }

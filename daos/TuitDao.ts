@@ -5,6 +5,8 @@ import {TuitDaoI} from "../interfaces/TuitDaoI";
 import {Tuit} from "../models/Tuit";
 import TuitModel from "../mongoose/TuitModel";
 import {UserDao} from "./UserDao";
+import tuitModel from "../mongoose/TuitModel";
+import {EmptyTuitError} from "../error_handlers/CustomErrors";
 
 /**
  * Implements Data Access Object managing data storage of Tuits.
@@ -63,6 +65,9 @@ export class TuitDao implements TuitDaoI {
         return UserDao.getInstance().findUserById(uid)
             .then((user) => {
                 if (user) {
+                    if (!tuit.tuit) {
+                        throw new EmptyTuitError();
+                    }
                     return TuitModel.create({...tuit, postedBy: uid});
                 } else {
                     throw new ReferenceError(`User ${uid} does not exist.`);

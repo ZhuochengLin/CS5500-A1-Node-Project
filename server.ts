@@ -26,6 +26,7 @@ import {BookmarkController} from "./controllers/BookmarkController";
 import {MessageController} from "./controllers/MessageController";
 import cors from "cors";
 import {AuthController} from "./controllers/AuthController";
+import {DislikeController} from "./controllers/DislikeController";
 
 config();
 const session = require("express-session");
@@ -58,6 +59,7 @@ mongoose.connect(`${process.env.DB_URI}`, (err) => {
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likeController = LikeController.getInstance(app);
+const dislikeController = DislikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);

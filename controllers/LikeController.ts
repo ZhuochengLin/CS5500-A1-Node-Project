@@ -4,6 +4,7 @@
 import {LikeControllerI} from "../interfaces/LikeControllerI";
 import {Express, NextFunction, Request, Response} from "express";
 import {LikeDao} from "../daos/LikeDao";
+import {NoSuchTuitError, NoUserLoggedInError} from "../error_handlers/CustomErrors";
 
 /**
  * Implements RESTful Web service API for likes resource.
@@ -30,6 +31,7 @@ export class LikeController implements LikeControllerI {
             app.get("/api/tuits/likes/:tid", LikeController.likeController.findAllUsersThatLikedTuit);
             app.get("/api/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
             app.get("/api/likes", LikeController.likeController.findAllLikes);
+            app.get("/api/users/:uid/likes/:tid", LikeController.likeController.findUserLikedTuit);
         }
         return LikeController.likeController;
     }
@@ -84,9 +86,33 @@ export class LikeController implements LikeControllerI {
      * as JSON array containing the tuits that liked by the user
      * @param {NextFunction} next Error handling function
      */
-    findAllTuitsLikedByUser = (req: Request, res: Response, next: NextFunction): void => {
-        LikeController.likeDao.findAllTuitsLikedByUser(req.params.uid)
-            .then((tuits) => res.json(tuits))
+    findAllTuitsLikedByUser = (req: any, res: Response, next: NextFunction): void => {
+        const uid = req.params.uid;
+        const profile = req.session["profile"];
+        if (uid === "me" && !profile) {
+            next(new NoUserLoggedInError());
+            return
+        }
+        const userId = uid == "me" ? profile._id : uid;
+        LikeController.likeDao.findAllTuitsLikedByUser(userId)
+            .then((likes) => {
+                const likedTuits = likes.map((like) => like.tuit);
+                res.json(likedTuits);
+            })
+            .catch(next);
+    }
+
+    findUserLikedTuit = (req: any, res: Response, next: NextFunction): void => {
+        const uid = req.params.uid;
+        const tid = req.params.tid;
+        const profile = req.session["profile"];
+        if (uid === "me" && !profile) {
+            next(new NoUserLoggedInError());
+            return
+        }
+        const userId = uid === "me" ? profile._id : uid;
+        LikeController.likeDao.findUserLikedTuit(userId, tid)
+            .then((like) => res.json(like))
             .catch(next);
     }
 

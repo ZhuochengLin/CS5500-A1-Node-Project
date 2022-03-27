@@ -31,6 +31,7 @@ const BookmarkController_1 = require("./controllers/BookmarkController");
 const MessageController_1 = require("./controllers/MessageController");
 const cors_1 = __importDefault(require("cors"));
 const AuthController_1 = require("./controllers/AuthController");
+const DislikeController_1 = require("./controllers/DislikeController");
 (0, dotenv_1.config)();
 const session = require("express-session");
 const app = (0, express_1.default)();
@@ -41,12 +42,14 @@ app.use((0, cors_1.default)({
 let sess = {
     secret: process.env.SECRET,
     cookie: {
-        secure: true
+        secure: false,
+        sameSite: "strict"
     }
 };
 if (process.env.ENV === "PRODUCTION") {
-    app.set("trust proxy", 1);
+    app.enable("trust proxy");
     sess.cookie.secure = true;
+    sess.cookie.sameSite = "none";
 }
 app.use(session(sess));
 app.use(express_1.default.json());
@@ -60,6 +63,7 @@ mongoose_1.default.connect(`${process.env.DB_URI}`, (err) => {
 const userController = UserController_1.UserController.getInstance(app);
 const tuitController = TuitController_1.TuitController.getInstance(app);
 const likeController = LikeController_1.LikeController.getInstance(app);
+const dislikeController = DislikeController_1.DislikeController.getInstance(app);
 const followController = FollowController_1.FollowController.getInstance(app);
 const bookmarkController = BookmarkController_1.BookmarkController.getInstance(app);
 const messageController = MessageController_1.MessageController.getInstance(app);

@@ -5,4 +5,5 @@ export interface TuitStats {
     replies: number;
     retuits: number;
     likes: number;
+    dislikes: number;
 }
