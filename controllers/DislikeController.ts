@@ -1,13 +1,26 @@
+/**
+ * @file Controller RESTful web service API for dislikes resource
+ */
 import {DislikeControllerI} from "../interfaces/DislikeControllerI";
 import {Express, NextFunction, Request, Response} from "express";
 import {DislikeDao} from "../daos/DislikeDao";
 import {NoUserLoggedInError} from "../error_handlers/CustomErrors";
 
+/**
+ * Implements RESTful Web service API for dislikes resource.
+ * @property {DislikeDao} dislikeDao Singleton DAO implementing dislike CRUD operations
+ * @property {DislikeController} dislikeController Singleton controller implementing RESTful web service API
+ */
 export class DislikeController implements DislikeControllerI {
 
     private static dislikeController: DislikeController | null = null;
     private static dislikeDao: DislikeDao = DislikeDao.getInstance();
 
+    /**
+     * Creates singleton controller instance.
+     * @param {Express} app Express instance to declare the RESTful web service API
+     * @returns {DislikeController} Singleton controller
+     */
     public static getInstance = (app: Express) => {
         if (DislikeController.dislikeController == null) {
             DislikeController.dislikeController = new DislikeController();
@@ -20,6 +33,12 @@ export class DislikeController implements DislikeControllerI {
         return DislikeController.dislikeController;
     }
 
+    /**
+     * Handles dislike record when user likes a tuit.
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     */
     userLikesTuit = (req: Request, res: Response, next: NextFunction): void => {
         DislikeController.dislikeDao.userLikesTuit(req.params.uid, req.params.tid)
             .then((status) => res.json(status))
@@ -61,7 +80,11 @@ export class DislikeController implements DislikeControllerI {
         const userId = uid === "me" ? profile._id : uid;
         DislikeController.dislikeDao.findAllTuitsDislikedByUser(userId)
             .then((dislikes) => {
-                const tuits = dislikes.map((dislike) => dislike.tuit);
+                const tuits = dislikes.map((dislike) => {
+                    const tuit = dislike.tuit;
+                    tuit.postedBy = dislike.dislikedBy;
+                    return tuit
+                });
                 res.json(tuits);
             }).catch(next)
     }
