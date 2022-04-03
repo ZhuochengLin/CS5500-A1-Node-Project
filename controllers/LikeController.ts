@@ -93,7 +93,7 @@ export class LikeController implements LikeControllerI {
             next(new NoUserLoggedInError());
             return
         }
-        const userId = uid == "me" ? profile._id : uid;
+        const userId = uid === "me" ? profile._id : uid;
         LikeController.likeDao.findAllTuitsLikedByUser(userId)
             .then((likes) => {
                 const likedTuits = likes.map((like) => {

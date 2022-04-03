@@ -43,7 +43,7 @@ let sess = {
     secret: process.env.SECRET,
     cookie: {
         secure: false,
-        sameSite: "strict"
+        sameSite: "lax"
     }
 };
 if (process.env.ENV === "PRODUCTION") {
