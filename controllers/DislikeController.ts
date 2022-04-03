@@ -35,9 +35,9 @@ export class DislikeController implements DislikeControllerI {
 
     /**
      * Handles dislike record when user likes a tuit.
-     * @param {Request} req
-     * @param {Response} res
-     * @param {NextFunction} next
+     * @param {Request} req Represents request from the client, including the user's id and the tuit's id
+     * @param {Response} res Represents response to the client, including the operation status
+     * @param {NextFunction} next Error handling function
      */
     userLikesTuit = (req: Request, res: Response, next: NextFunction): void => {
         DislikeController.dislikeDao.userLikesTuit(req.params.uid, req.params.tid)
@@ -45,17 +45,34 @@ export class DislikeController implements DislikeControllerI {
             .catch(next);
     }
 
+    /**
+     * Creates a dislike record.
+     * @param {Request} req Represents request from the client, including the user's id and the tuit's id
+     * @param {Response} res Represents response to the client, including the dislike data
+     * @param {NextFunction} next Error handling function
+     */
     userUnlikesTuit = (req: Request, res: Response, next: NextFunction):void => {
         DislikeController.dislikeDao.userUnlikesTuit(req.params.uid, req.params.tid)
             .then((dislike) => res.json(dislike))
             .catch(next);
     }
 
+    /**
+     * Retrieves all dislike records.
+     * @param {Request} req Represents request from the client
+     * @param {Response} res Represents response to the client, including all dislike records formatted as JSON object
+     */
     findAllDislikes = (req: Request, res: Response): void => {
         DislikeController.dislikeDao.findAllDislikes()
             .then((dislikes) => res.json(dislikes));
     }
 
+    /**
+     * Finds "user dislikes a tuit" record.
+     * @param {Request} req Represents request from the client, including the user's id and the tuit's id
+     * @param {Response} res Represents response to the client, including the dislike record if exists
+     * @param {NextFunction} next Error handling function
+     */
     findUserDislikedTuit = (req: any, res: Response, next: NextFunction): void => {
         const uid = req.params.uid;
         const tid = req.params.tid;
@@ -70,6 +87,13 @@ export class DislikeController implements DislikeControllerI {
             .catch(next);
     }
 
+    /**
+     * Finds all tuits disliked by the user.
+     * @param {Request} req Represents request from the client, including the user's id
+     * @param {Response} res Represents response to the client, including all the tuits disliked by the user
+     * formatted as JSON object
+     * @param {NextFunction} next Error handling function
+     */
     findAllTuitsDislikedByUser = (req: any, res: Response, next: NextFunction): void => {
         const uid = req.params.uid;
         const profile = req.session["profile"];

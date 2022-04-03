@@ -126,6 +126,12 @@ export class TuitController implements TuitControllerI {
             .catch(next);
     }
 
+    /**
+     * Toggles whether a user likes a tuit.
+     * @param {Request} req Represents request from the client, including the user's id and the tuit's id
+     * @param {Response} res Represents response to the client, including the operation status
+     * @param {NextFunction} next Error handling function
+     */
     userTogglesTuitLikes = async (req: any, res: Response, next: NextFunction): Promise<void> => {
         const uid = req.params.uid;
         const tid = req.params.tid;
@@ -157,6 +163,12 @@ export class TuitController implements TuitControllerI {
         }
     }
 
+    /**
+     * Toggles whether a user dislikes a tuit.
+     * @param {Request} req Represents request from the client, including the user's id and the tuit's id
+     * @param {Response} res Represents response to the client, including the operation status
+     * @param {NextFunction} next Error handling function
+     */
     userTogglesTuitDislikes = async (req: any, res: Response, next: NextFunction): Promise<void> => {
         const uid = req.params.uid;
         const tid = req.params.tid;

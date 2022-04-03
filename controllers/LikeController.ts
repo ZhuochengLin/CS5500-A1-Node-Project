@@ -103,6 +103,12 @@ export class LikeController implements LikeControllerI {
             }).catch(next);
     }
 
+    /**
+     * Finds "user likes a tuit" record.
+     * @param {Request} req Represents request from the client, including the user's id and the tuit's id
+     * @param {Response} res Represents response to the client, including the like record if exists
+     * @param {NextFunction} next Error handling function
+     */
     findUserLikedTuit = (req: any, res: Response, next: NextFunction): void => {
         const uid = req.params.uid;
         const tid = req.params.tid;

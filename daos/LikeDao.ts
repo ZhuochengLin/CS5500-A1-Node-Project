@@ -90,10 +90,21 @@ export class LikeDao implements LikeDaoI {
         return LikeModel.find();
     }
 
+    /**
+     * Finds "user likes a tuit" record
+     * @param {string} uid The user's primary key
+     * @param {string} tid The tuit's primary key
+     * @return {Promise} To be notified when the like is found
+     */
     findUserLikedTuit = async (uid: string, tid: string): Promise<Like | null> => {
         return LikeModel.findOne({tuit: tid, likedBy: uid});
     }
 
+    /**
+     * Counts how many users liked the tuit
+     * @param {string} tid The tuit's primary key
+     * @return {Promise} To be notified when the count is collected
+     */
     countHowManyLikedTuit = async (tid: string): Promise<number> => {
         return likeModel.countDocuments({tuit: tid});
     }

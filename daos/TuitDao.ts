@@ -5,7 +5,6 @@ import {TuitDaoI} from "../interfaces/TuitDaoI";
 import {Tuit} from "../models/Tuit";
 import TuitModel from "../mongoose/TuitModel";
 import {UserDao} from "./UserDao";
-import tuitModel from "../mongoose/TuitModel";
 import {EmptyTuitError} from "../error_handlers/CustomErrors";
 
 /**

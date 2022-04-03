@@ -36,7 +36,7 @@ export class BookmarkController implements BookmarkControllerI {
 
     /**
      * Creates a new bookmark instance.
-     * @param {Request} req, Represents request from the client, including path parameters uid identifying the
+     * @param {Request} req Represents request from the client, including path parameters uid identifying the
      * user's primary key and tid identifying the tuit's primary key
      * @param {Response} res Represents response to the client, including the body formatted as JSON containing the
      * new bookmark that was inserted into the database
