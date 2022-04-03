@@ -97,13 +97,10 @@ export class LikeController implements LikeControllerI {
         LikeController.likeDao.findAllTuitsLikedByUser(userId)
             .then((likes) => {
                 const likedTuits = likes.map((like) => {
-                    const tuit = like.tuit;
-                    tuit.postedBy = like.likedBy;
-                    return tuit
+                    return like.tuit;
                 });
                 res.json(likedTuits);
-            })
-            .catch(next);
+            }).catch(next);
     }
 
     findUserLikedTuit = (req: any, res: Response, next: NextFunction): void => {

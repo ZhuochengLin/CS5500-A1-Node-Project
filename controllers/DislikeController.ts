@@ -81,9 +81,7 @@ export class DislikeController implements DislikeControllerI {
         DislikeController.dislikeDao.findAllTuitsDislikedByUser(userId)
             .then((dislikes) => {
                 const tuits = dislikes.map((dislike) => {
-                    const tuit = dislike.tuit;
-                    tuit.postedBy = dislike.dislikedBy;
-                    return tuit
+                    return dislike.tuit;
                 });
                 res.json(tuits);
             }).catch(next)
